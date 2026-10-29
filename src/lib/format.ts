@@ -1,44 +1,41 @@
-/**
- * Funções puras de formatação de datas para a previsão.
- */
+function parseLocalDate(localDate: string): Date | null {
+  const dateParts = /^(\d{4})-(\d{2})-(\d{2})$/.exec(localDate);
+  if (!dateParts) return null;
 
-const WEEKDAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-const MONTHS = [
-  'Jan',
-  'Fev',
-  'Mar',
-  'Abr',
-  'Mai',
-  'Jun',
-  'Jul',
-  'Ago',
-  'Set',
-  'Out',
-  'Nov',
-  'Dez',
-];
+  const [, year, month, day] = dateParts;
+  const date = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day), 12));
 
-/** Faz parse de uma data ISO (YYYY-MM-DD) como data local, sem fuso. */
-function parseLocalDate(iso: string): Date {
-  const [year, month, day] = iso.split('-').map(Number);
-  return new Date(year, (month ?? 1) - 1, day ?? 1);
+  if (
+    date.getUTCFullYear() !== Number(year) ||
+    date.getUTCMonth() !== Number(month) - 1 ||
+    date.getUTCDate() !== Number(day)
+  ) {
+    return null;
+  }
+
+  return date;
 }
 
-/**
- * Rótulo do dia relativo a "hoje":
- * - índice 0 → "Hoje"
- * - índice 1 → "Amanhã"
- * - demais → dia da semana abreviado
- */
-export function getDayLabel(iso: string, index: number): string {
+export function formatDayLabel(localDate: string, index: number): string {
+  const date = parseLocalDate(localDate);
+  if (!date) return 'Data indisponível';
+
   if (index === 0) return 'Hoje';
   if (index === 1) return 'Amanhã';
-  const date = parseLocalDate(iso);
-  return WEEKDAYS[date.getDay()];
+
+  const weekday = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'UTC',
+    weekday: 'short',
+  })
+    .format(date)
+    .replace(/\.$/, '');
+
+  return weekday.charAt(0).toLocaleUpperCase('pt-BR') + weekday.slice(1);
 }
 
-/** Formata a data como "12 Jun". */
-export function getShortDate(iso: string): string {
-  const date = parseLocalDate(iso);
-  return `${date.getDate()} ${MONTHS[date.getMonth()]}`;
+export function getShortDate(localDate: string): string {
+  if (!parseLocalDate(localDate)) return 'Data indisponível';
+
+  const [, , month, day] = /^(\d{4})-(\d{2})-(\d{2})$/.exec(localDate) ?? [];
+  return `${day}/${month}`;
 }
