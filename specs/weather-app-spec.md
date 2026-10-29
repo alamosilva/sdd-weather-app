@@ -97,6 +97,11 @@ NFR-01, NFR-02, NFR-03, NFR-04 e NFR-07 são transversais aos fluxos principais;
 - Dados: temperaturas negativas/extremas, conversão e arredondamento; troca de data, fuso ou horário de verão.
 - Concorrência e interface: nova seleção durante consulta pendente; larguras de 320–1440 px, zoom de 200% e uso por teclado/leitor de tela.
 
+## Assumptions
+
+- As APIs de geocoding e forecast da Open-Meteo podem ser chamadas diretamente pelo navegador, sem chave de API.
+- O app é publicado como conteúdo estático no GitHub Pages; não há processamento de busca nem persistência de dados meteorológicos no servidor.
+- O provedor retorna coordenadas e timezone quando disponíveis; campos ausentes ou respostas inválidas são tratados conforme os critérios de aceite.
 
 ## Risks
 
