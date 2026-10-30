@@ -32,8 +32,11 @@ Sem isso, os assets seriam buscados na raiz do domínio e dariam 404.
 
 ```bash
 VITE_BASE=/sdd-weather-app/app/ pnpm build
-pnpm preview
+VITE_BASE=/sdd-weather-app/app/ pnpm preview
 ```
+
+Use o nome exato do repositório no prefixo. Abra a URL de preview incluindo esse
+subcaminho, por exemplo `/sdd-weather-app/app/`.
 
 ## Configuração do repositório (uma vez)
 

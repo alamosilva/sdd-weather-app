@@ -20,8 +20,10 @@ workflow define `VITE_BASE`.
 
 ```bash
 VITE_BASE=/sdd-weather-app/app/ pnpm build
-pnpm preview
+VITE_BASE=/sdd-weather-app/app/ pnpm preview
 ```
+
+Substitua `sdd-weather-app` pelo nome exato do repositório, se for diferente.
 
 **Sucesso:** o preview do build de produção carrega sem erros de caminho de
 assets.
